@@ -182,19 +182,25 @@ rev_trimmed_files = glob.glob(f"./fastq/trimmed/*{REV_FILE_ID}*trimmed*fastq")
 logging.info("Executing `Merge_Sanger_v2.py` on all samples")
 with open("all_merged_sequences.fasta", "w"):
     pass
+
 for sample_name in sorted(sample_names):
     logging.info(f"Executing `Merge_Sanger_v2.py` on sample `{sample_name}`")
-
     try:
         Path(f"./{sample_name}_merger/").mkdir(parents=True, exist_ok=True)
         fwd_file = glob.glob(f"./fastq/trimmed/{sample_name}*{FWD_FILE_ID}*trimmed*fastq")[-1]
         rev_file = glob.glob(f"./fastq/trimmed/{sample_name}*{REV_FILE_ID}*trimmed*fastq")[-1]
         for rec_fwd in SeqIO.parse(fwd_file, "fastq"):
-            with open(f"./{sample_name}_merger/000F-{sample_name}.seq", "w", encoding="UTF-8") as fastq_fwd_output:
-                fastq_fwd_output.write(str(rec_fwd.seq))
+            if len(rec_fwd.seq) < 20:
+                logging.warning(f"`{fwd_file}` has a length of {len(rec_fwd.seq)}. Skipping this file")
+            else:
+                with open(f"./{sample_name}_merger/000F-{sample_name}.seq", "w", encoding="UTF-8") as fastq_fwd_output:
+                    fastq_fwd_output.write(str(rec_fwd.seq))
         for rec_rev in SeqIO.parse(rev_file, "fastq"):
-            with open(f"./{sample_name}_merger/001R-{sample_name}.seq", "w", encoding="UTF-8") as fastq_rev_output:
-                fastq_rev_output.write(str(rec_rev.seq))
+            if len(rec_rev.seq) < 20:
+                logging.warning(f"`{rev_file}` has a length of {len(rec_rev.seq)}. Skipping this file")
+            else:
+                with open(f"./{sample_name}_merger/001R-{sample_name}.seq", "w", encoding="UTF-8") as fastq_rev_output:
+                    fastq_rev_output.write(str(rec_rev.seq))
     
         os.chdir(f"./{sample_name}_merger/")
         with open(f"{sample_name}_merger.log", "w") as log:
@@ -211,7 +217,8 @@ for sample_name in sorted(sample_names):
         os.chdir("..")
     except Exception as err:
         logging.error(f"A problem occured when executing the script `Merge_Sanger_v2.py` on the sample `{sample_name}`. Error: '{err}'")
-        sys.exit()
+        os.chdir("..")
+        #sys.exit()
 
 logging.info("Done. All merged sequences are in the file `all_merged_sequences.fasta`")
 logging.info("Running blastn on nt database... ")
