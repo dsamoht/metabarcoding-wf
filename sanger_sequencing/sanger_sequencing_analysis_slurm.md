@@ -20,5 +20,5 @@ git clone https://github.com/lh3/seqtk.git
 cd seqtk; make; cd ..                                          
 export PATH=$PATH:$PWD/seqtk
 
-python 16s_sanger_analysis_v2.py
+python paired_reads_analysis.py
 ```
