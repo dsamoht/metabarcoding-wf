@@ -6,7 +6,7 @@ process DADA2 {
         container = params.dada2_docker
     }
 
-    publishDir "${params.outdir}/dada2", mode: 'copy'
+    publishDir "${params.output}/dada2", mode: 'copy'
 
     input:
     path rawReads

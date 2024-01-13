@@ -6,7 +6,7 @@ process FIGARO {
         container = params.figaro_docker
     }
 
-    publishDir "${params.outdir}/figaro", mode: 'copy'
+    publishDir "${params.output}/figaro", mode: 'copy'
 
     input:
     path inputDir
@@ -24,7 +24,7 @@ process FIGARO {
     print(data[0]['maxExpectedError'][1])
     """
     """
-    figaro.py -a ${params.amplicon_length} -f ${params.fwd_primer_length} -r ${params.rev_primer_length} -i ${inputDir} -o ${inputDir}_figaro_out
+    figaro.py -a ${params.amplicon_length} -f ${params.fwd_primer_length} -r ${params.rev_primer_length} -i ${inputDir} -o ${inputDir}_figaro_out -m 10
     python -c "${python_cmd}" > filterAndTrimParameters.txt
     """
 
