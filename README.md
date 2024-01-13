@@ -1,2 +1,3 @@
-# Metataxonomics workflow
-For now, a bunch of utility scripts for metataxonomics
+# Metabarcoding workflow
+## Introduction
+A Nextflow pipeline automating amplicon data treatment, from raw Illumina reads to ASVs
