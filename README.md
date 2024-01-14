@@ -1,6 +1,6 @@
-# Automation of Amplicon Data Treatment
+# Automation of Amplicon Data Treatment for Microbial Ecology
 ## Introduction
-A Nextflow pipeline automating amplicon data treatment from __raw__ Illumina paired reads to __ASVs__
+A Nextflow pipeline automating metabarcoding data treatment from __raw__ Illumina paired reads to __ASVs__
 > *__Note__* : Input reads must have these characteristics:
 > - Demultiplexed
 > - Typical Illumina file name (i.e. \*_L001_R{1,2}_001.fastq.gz)  
